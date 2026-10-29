@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#163b50">
+  <meta name="description" content="Smart Lab OS — إدارة المختبر والمخزون والإنتاج والجودة">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Smart Lab OS</title>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">SL</div>
+      <div><strong>Smart Lab OS</strong><small>منصة المختبر والمصنع</small></div>
+    </div>
+    <div class="connection"><span id="connectionDot" class="dot"></span><span id="connectionText">جارٍ التحقق...</span></div>
+  </header>
+  <main class="shell">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">لوحة التشغيل</p>
+        <h1>إدارة العمل من مكان واحد</h1>
+        <p class="muted">نسخة تأسيسية محلية للاختبار. لا تتصل بعد بقاعدة بيانات سحابية.</p>
+      </div>
+      <button id="installBtn" class="button secondary hidden">تثبيت التطبيق</button>
+    </section>
+
+    <section class="status-grid">
+      <article class="stat"><span>الخامات المسجلة على هذا الجهاز</span><strong id="materialCount">0</strong></article>
+      <article class="stat"><span>تغييرات بانتظار المزامنة</span><strong id="pendingCount">0</strong></article>
+      <article class="stat"><span>حالة السحابة</span><strong id="cloudStatus" class="status-warn">غير مهيأة</strong></article>
+    </section>
+
+    <nav class="tabs" aria-label="أقسام التطبيق">
+      <button class="tab active" data-panel="materials">الخامات</button>
+      <button class="tab" data-panel="sync">المزامنة</button>
+      <button class="tab" data-panel="roadmap">خطة النظام</button>
+    </nav>
+
+    <section id="materials" class="panel">
+      <div class="section-heading"><div><h2>سجل الخامات التجريبي</h2><p class="muted">البيانات هنا محفوظة محليًا داخل هذا المتصفح فقط.</p></div></div>
+      <form id="materialForm" class="material-form">
+        <label>اسم الخامة<input id="materialName" required maxlength="120" placeholder="مثال: كربونات الكالسيوم"></label>
+        <label>الكود<input id="materialCode" maxlength="40" placeholder="RM-001"></label>
+        <label>الوحدة<select id="materialUnit"><option value="kg">كيلوجرام (kg)</option><option value="g">جرام (g)</option><option value="L">لتر (L)</option><option value="pcs">قطعة (pcs)</option></select></label>
+        <label>الرصيد الافتتاحي<input id="materialQty" type="number" min="0" step="0.001" value="0" required></label>
+        <button class="button primary" type="submit">حفظ محلي</button>
+      </form>
+      <div class="search-row"><input id="materialSearch" type="search" placeholder="ابحث بالاسم أو الكود..." aria-label="بحث في الخامات"></div>
+      <div id="materialList" class="material-list"></div>
+      <p id="emptyState" class="empty">لا توجد خامات بعد. أضف خامة تجريبية لاختبار الحفظ المحلي.</p>
+    </section>
+
+    <section id="sync" class="panel hidden">
+      <h2>حالة الحفظ والمزامنة</h2>
+      <div class="notice warning"><strong>تنبيه:</strong> لم يتم إعداد الاتصال السحابي. لن تنتقل البيانات إلى جهاز آخر في هذه النسخة.</div>
+      <div class="sync-row"><span>الاتصال بالإنترنت</span><strong id="networkValue">—</strong></div>
+      <div class="sync-row"><span>تغييرات محلية غير متزامنة</span><strong id="queueValue">0</strong></div>
+      <div class="sync-row"><span>خدمة قاعدة البيانات</span><strong>غير مهيأة</strong></div>
+      <button id="exportBtn" class="button secondary">تصدير نسخة JSON</button>
+      <p class="muted small">التصدير نسخة محلية احتياطية فقط، وليس بديلًا عن النسخ الاحتياطي السحابي أو اختبار الاستعادة.</p>
+    </section>
+
+    <section id="roadmap" class="panel hidden">
+      <h2>مراحل Smart Lab OS</h2>
+      <ul class="roadmap">
+        <li class="done"><strong>الأساس الحالي</strong><span>واجهة عربية، سجل خامات محلي، ومؤشر اتصال.</span></li>
+        <li><strong>قاعدة البيانات والصلاحيات</strong><span>Supabase Auth وPostgreSQL وRLS — تحتاج إعداد مشروع واختبارًا.</span></li>
+        <li><strong>المزامنة دون إنترنت</strong><span>قائمة تغييرات، منع التكرار، وحل التعارضات.</span></li>
+        <li><strong>الموردون والمخزون</strong><span>حركات مخزون وسجل تدقيق وعروض أسعار.</span></li>
+        <li><strong>التركيبات والإنتاج وQC</strong><span>إصدارات وصفات، تشغيلات، فحوص واعتمادات.</span></li>
+      </ul>
+    </section>
+    <footer><span>Smart Lab OS · نسخة تأسيسية</span><span id="lastSaved">لم تُسجّل تغييرات بعد</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
